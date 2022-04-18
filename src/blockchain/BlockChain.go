@@ -11,7 +11,7 @@ import (
 	"os"
 )
 
-const dbFile = "blockchain_%.db"
+const dbFile = "blockchain_%s.db"
 const blocksBucket = "blocks"
 const genesisCoinbaseData = "created by parkjp"
 
