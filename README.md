@@ -1,6 +1,5 @@
 
-
-# Blockchain Test Code (Golang)
+# Blockchain Example Code (Golang)
 
   
 ```
