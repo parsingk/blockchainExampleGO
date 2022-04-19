@@ -11,3 +11,5 @@ blockchain_3000.db
 blockchain_*.db.lock
 wallet_3000.dat
 wallet_*.dat
+blockchainTest.exe
+vendor

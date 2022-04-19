@@ -104,7 +104,6 @@ func CreateBlockchain(address, nodeID string) *BlockChain {
 func NewBlockChain(nodeID string) *BlockChain {
 	dbFile := fmt.Sprintf(dbFile, nodeID)
 	if dbExists(dbFile) == false {
-		fmt.Println("Starting Blockchain...")
 		genesis, err := os.Open(genesisDBFile)
 		if err != nil {
 			log.Panic(err)

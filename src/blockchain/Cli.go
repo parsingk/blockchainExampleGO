@@ -30,15 +30,9 @@ func (cli *CLI) validateArgs() {
 
 // Run parses command line arguments and processes commands
 func (cli *CLI) Run() {
-	//cli.validateArgs()
+	cli.validateArgs()
 
 	nodeID := "3000"
-
-	//nodeID := os.Getenv("NODE_ID")
-	//if nodeID == "" {
-	//	fmt.Printf("NODE_ID env. var is not set!")
-	//	os.Exit(1)
-	//}
 
 	getBalanceCmd := flag.NewFlagSet("getbalance", flag.ExitOnError)
 	createBlockchainCmd := flag.NewFlagSet("createblockchain", flag.ExitOnError)
@@ -145,13 +139,6 @@ func (cli *CLI) Run() {
 	}
 
 	if startNodeCmd.Parsed() {
-		fmt.Println(getIpAddress())
-		//nodeID := os.Getenv("NODE_ID")
-		//if nodeID == "" {
-		//	//nodeID = "3000"
-		//	startNodeCmd.Usage()
-		//	os.Exit(1)
-		//}
 		cli.startNode(nodeID, *startNodeMiner)
 	}
 }
