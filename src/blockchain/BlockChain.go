@@ -7,11 +7,13 @@ import (
 	"errors"
 	"fmt"
 	bolt "github.com/boltdb/bolt"
+	"io"
 	"log"
 	"os"
 )
 
 const dbFile = "blockchain_%s.db"
+const genesisDBFile = "genesis.db"
 const blocksBucket = "blocks"
 const genesisCoinbaseData = "created by parkjp"
 
@@ -102,8 +104,22 @@ func CreateBlockchain(address, nodeID string) *BlockChain {
 func NewBlockChain(nodeID string) *BlockChain {
 	dbFile := fmt.Sprintf(dbFile, nodeID)
 	if dbExists(dbFile) == false {
-		fmt.Println("No existing blockchain found. Create one first.")
-		os.Exit(1)
+		fmt.Println("Starting Blockchain...")
+		genesis, err := os.Open(genesisDBFile)
+		if err != nil {
+			log.Panic(err)
+		}
+		defer genesis.Close()
+
+		file, err := os.Create(dbFile)
+		if err != nil {
+			log.Panic(err)
+		}
+
+		_, err = io.Copy(file, genesis)
+		if err != nil {
+			log.Panic(err)
+		}
 	}
 
 	var tip []byte

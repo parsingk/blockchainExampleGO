@@ -12,13 +12,12 @@ import (
 )
 
 const protocol = "tcp"
-const ipAddress = "192.168.0.17"
 const nodeVersion = 1
 const commandLength = 12
 
 var nodeAddress string
 var miningAddress string
-var knownNodes = []string{"192.168.0.17:3000"}
+var knownNodes = []string{"192.168.0.123:3000"}
 var blocksInTransit = [][]byte{}
 var mempool = make(map[string]Transaction)
 
@@ -56,6 +55,36 @@ type versionObject struct {
 	Version    int
 	BestHeight int
 	AddrFrom   string
+}
+
+func getIpAddress() net.IP {
+	var ip net.IP
+	ifaces, err := net.Interfaces()
+	if err != nil {
+		log.Panic(err)
+	}
+
+	for _, i := range ifaces {
+		addrs, err := i.Addrs()
+		if err != nil {
+			log.Panic(err)
+		}
+
+		for _, addr := range addrs {
+			switch v := addr.(type) {
+			case *net.IPNet:
+				ip = v.IP
+			case *net.IPAddr:
+				ip = v.IP
+			}
+		}
+
+		if ip != nil {
+			break
+		}
+	}
+
+	return ip
 }
 
 func commandToBytes(command string) []byte {
@@ -419,7 +448,7 @@ func handleConnection(conn net.Conn, bc *BlockChain) {
 }
 
 func StartServer(nodeID, minerAddress string) {
-	nodeAddress = fmt.Sprintf("%s:%s", ipAddress, nodeID)
+	nodeAddress = fmt.Sprintf("%s:%s", getIpAddress(), nodeID)
 	fmt.Println(nodeAddress)
 	miningAddress = minerAddress
 	ln, err := net.Listen(protocol, nodeAddress)
